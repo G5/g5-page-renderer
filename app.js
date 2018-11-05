@@ -18,11 +18,20 @@ app.post('/rendered_page', function(req, res){
 
   async function getPage() {
     let browser = await puppeteer.launch({ headless: true, 
-                                             args: ['--no-sandbox',
-                                                    '--disable-setuid-sandbox',
-                                                    '--disable-dev-shm-usage',
-                                                    '--single-process'] });
+                                           args: ['--no-sandbox',
+                                                  '--disable-setuid-sandbox',
+                                                  '--disable-dev-shm-usage',
+                                                  '--single-process'] });
     let page = await browser.newPage();
+
+    // Let's speed this thing up by not loading any images
+    await page.setRequestInterception(true);
+    page.on('request', request => {
+      if (request.resourceType() === 'image')
+        request.abort();
+      else
+        request.continue();
+    });
 
     await page.goto(pageURL)
 
