@@ -1,5 +1,6 @@
 var express = require('express');
 const PORT = process.env.PORT
+// const PORT = 3000
 var debug = require('debug')
 var bodyParser = require("body-parser");
 const puppeteer = require('puppeteer');
@@ -24,11 +25,13 @@ app.post('/rendered_page', function(req, res){
       waitUntil: 'networkidle2'
     });
 
-    let bodyHTML = await page.evaluate(() => document.documentElement.outerHTML);
+    await setTimeout(async function() { return true }, 2000);
+
+    let theDOM = await page.evaluate(() => document.documentElement.outerHTML);
 
     await browser.close();
 
-    return bodyHTML
+    return theDOM
   }
 
   getPage().then((body)=>{res.send(body);});
