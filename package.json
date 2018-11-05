@@ -1,0 +1,21 @@
+{
+  "name": "g5-page-renderer",
+  "version": "1.0.0",
+  "description": "renders response body of url",
+  "main": "app.js",
+  "engines":{
+    "node": "^9.2.1",
+    "npm": "^5.5.1"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "puppeteer": "^1.10.0"
+  }
+}
