@@ -1,7 +1,6 @@
 var express = require('express');
-const PORT = process.env.PORT
-// const PORT = 3000
-var debug = require('debug')
+const PORT = process.env.PORT;
+var debug = require('debug');
 var bodyParser = require("body-parser");
 const puppeteer = require('puppeteer');
 var app = express();
@@ -17,6 +16,7 @@ app.post('/rendered_page', function(req, res){
   var pageURL=req.body.url;
 
   async function getPage() {
+    // configure Puppeteer
     let browser = await puppeteer.launch({ headless: true, 
                                            args: ['--no-sandbox',
                                                   '--disable-setuid-sandbox',
@@ -33,17 +33,18 @@ app.post('/rendered_page', function(req, res){
         request.continue();
     });
 
+    // Visit Page URL
     await page.goto(pageURL)
 
+    // Wait for network to go idle, or up to 5 seconds, whichever comes first
     await Promise.race([
       page.waitForNavigation({waitUntil: 'networkidle0'}),
       page.waitFor(5000)
     ]);
 
+    // Grab the <html> element, close the browser, call it good.
     let theDOM = await page.evaluate(() => document.documentElement.outerHTML);
-
     await browser.close();
-
     return theDOM
   }
 
