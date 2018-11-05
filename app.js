@@ -21,7 +21,8 @@ app.post('/rendered_page', function(req, res){
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
 
-    await page.goto(pageURL)
+    await page.goto(pageURL, { networkIdleTimeout: 5000,
+                               timeout: 10000 })
 
     await Promise.race([
       page.waitForNavigation({waitUntil: 'networkidle0'}),
