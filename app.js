@@ -25,7 +25,7 @@ app.post('/rendered_page', function(req, res){
       waitUntil: 'networkidle2'
     });
 
-    await setTimeout(async function() { return true }, 2000);
+    // await setTimeout(async function() { return true }, 2000);
 
     let theDOM = await page.evaluate(() => document.documentElement.outerHTML);
 
