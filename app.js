@@ -17,15 +17,14 @@ app.post('/rendered_page', function(req, res){
   var pageURL=req.body.url;
 
   async function getPage() {
-
-    const browser = await puppeteer.launch({ headless: true, 
+    let browser = await puppeteer.launch({ headless: true, 
                                              args: ['--no-sandbox',
                                                     '--disable-setuid-sandbox',
                                                     '--disable-dev-shm-usage',
                                                     '--single-process'] });
-    const page = await browser.newPage();
+    let page = await browser.newPage();
 
-    await page.goto(pageURL, { timeout: 10000 })
+    await page.goto(pageURL)
 
     await Promise.race([
       page.waitForNavigation({waitUntil: 'networkidle0'}),
